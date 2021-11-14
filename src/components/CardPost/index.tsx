@@ -7,6 +7,7 @@ interface CardPostProps {
   subTitle: string;
   createdAt: string;
   author: string;
+  url: string;
 }
 
 export default function CardPost({
@@ -14,10 +15,11 @@ export default function CardPost({
   subTitle,
   createdAt,
   author,
+  url,
 }: CardPostProps) {
   return (
     <div className={styles.container}>
-      <Link href="/post/post">
+      <Link href={`/post/${url}`}>
         <a>
           <h1>{title}</h1>
           <p>{subTitle}</p>

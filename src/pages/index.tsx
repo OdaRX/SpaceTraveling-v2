@@ -3,6 +3,7 @@ import Head from 'next/head';
 import CardPost from '../components/CardPost';
 
 import { getPrismicClient } from '../services/prismic';
+import Prismic from '@prismicio/client';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -16,7 +17,9 @@ interface Post {
     author: string;
   };
 }
-
+interface PostsProps {
+  posts: Post[];
+}
 interface PostPagination {
   next_page: string;
   results: Post[];
@@ -26,7 +29,7 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home() {
+export default function Home({ posts }: PostsProps) {
   return (
     <>
       <Head>
@@ -35,40 +38,22 @@ export default function Home() {
 
       <main className={commonStyles.container}>
         <div className={styles.container}>
-          <CardPost
-            title="Como utilizar Hooks"
-            subTitle="Pensando em sincronização em vez de ciclos de vida."
-            createdAt="15 Mar 2021"
-            author="Lucas Roberto"
-          />
-
-          <CardPost
-            title="Como utilizar Hooks"
-            subTitle="Pensando em sincronização em vez de ciclos de vida."
-            createdAt="15 Mar 2021"
-            author="Lucas Roberto"
-          />
-
-          <CardPost
-            title="Como utilizar Hooks"
-            subTitle="Pensando em sincronização em vez de ciclos de vida."
-            createdAt="15 Mar 2021"
-            author="Lucas Roberto"
-          />
-
-          <CardPost
-            title="Como utilizar Hooks"
-            subTitle="Pensando em sincronização em vez de ciclos de vida."
-            createdAt="15 Mar 2021"
-            author="Lucas Roberto"
-          />
-
-          <CardPost
-            title="Como utilizar Hooks"
-            subTitle="Pensando em sincronização em vez de ciclos de vida."
-            createdAt="15 Mar 2021"
-            author="Lucas Roberto"
-          />
+          {posts.map(post => (
+            <CardPost
+              key={post.uid}
+              title={post.data.title}
+              subTitle={post.data.subtitle}
+              createdAt={new Date(
+                post.first_publication_date
+              ).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              })}
+              author={post.data.author}
+              url={post.uid}
+            />
+          ))}
         </div>
 
         <button className={styles.moreButton}>Carregar mais posts</button>
@@ -77,8 +62,15 @@ export default function Home() {
   );
 }
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+  const response = await prismic.query([
+    Prismic.predicates.at('document.type', 'posts'),
+  ]);
+
+  const posts = response.results;
+
+  return {
+    props: { posts },
+  };
+};
