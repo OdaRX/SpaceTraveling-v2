@@ -1,1 +1,17 @@
-// TODO
+.container {
+  margin-top: 1.59rem;
+}
+
+.moreButton {
+  margin: 1rem 0 5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--pink);
+  background: transparent;
+  cursor: pointer;
+
+  transition: color 0.2s;
+  &:hover {
+    color: var(--title);
+  }
+}

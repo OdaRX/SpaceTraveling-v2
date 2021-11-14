@@ -1,0 +1,44 @@
+.container {
+  & {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    color: var(--title);
+    font-weight: bold;
+    font-size: 1.75rem;
+    transition: color 0.2s;
+  }
+
+  &:hover h1 {
+    color: var(--pink);
+  }
+
+  p {
+    color: var(--text);
+    margin-top: 0.5rem;
+    font-weight: regular;
+    font-size: 1.125rem;
+  }
+
+  div {
+    display: flex;
+    margin-top: 1.5rem;
+
+    span {
+      color: var(--info);
+      font-weight: regular;
+      font-size: 0.875rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1.5rem;
+
+      svg {
+        height: 1.25rem;
+        width: 1.25rem;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}

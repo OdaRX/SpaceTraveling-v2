@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
+import CardPost from '../components/CardPost';
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -32,8 +33,45 @@ export default function Home() {
         <title>Home | spacetraveling</title>
       </Head>
 
-      <main>
-        <h1>teste</h1>
+      <main className={commonStyles.container}>
+        <div className={styles.container}>
+          <CardPost
+            title="Como utilizar Hooks"
+            subTitle="Pensando em sincronização em vez de ciclos de vida."
+            createdAt="15 Mar 2021"
+            author="Lucas Roberto"
+          />
+
+          <CardPost
+            title="Como utilizar Hooks"
+            subTitle="Pensando em sincronização em vez de ciclos de vida."
+            createdAt="15 Mar 2021"
+            author="Lucas Roberto"
+          />
+
+          <CardPost
+            title="Como utilizar Hooks"
+            subTitle="Pensando em sincronização em vez de ciclos de vida."
+            createdAt="15 Mar 2021"
+            author="Lucas Roberto"
+          />
+
+          <CardPost
+            title="Como utilizar Hooks"
+            subTitle="Pensando em sincronização em vez de ciclos de vida."
+            createdAt="15 Mar 2021"
+            author="Lucas Roberto"
+          />
+
+          <CardPost
+            title="Como utilizar Hooks"
+            subTitle="Pensando em sincronização em vez de ciclos de vida."
+            createdAt="15 Mar 2021"
+            author="Lucas Roberto"
+          />
+        </div>
+
+        <button className={styles.moreButton}>Carregar mais posts</button>
       </main>
     </>
   );
