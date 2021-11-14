@@ -4,4 +4,30 @@
   padding: 0;
 }
 
-// TODO
+:root {
+  --title: #f8f8f8;
+  --text: #d7d7d7;
+  --info: #bbbbbb;
+  --pink: #ff57b2;
+  --black-700: #1a1d23;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  background: var(--black-700);
+}
+*,
+button,
+input {
+  border: 0;
+  outline: 0;
+  font-family: 'Inter', sans-serif;
+}
+a {
+  text-decoration: none;
+}
