@@ -1,7 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-
 import { getPrismicClient } from '../../services/prismic';
-
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { FiUser, FiCalendar, FiClock } from 'react-icons/fi';
@@ -9,6 +7,7 @@ import { RichText } from 'prismic-dom';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Prismic from '@prismicio/client';
+import Link from 'next/link';
 
 interface Post {
   first_publication_date: string | null;
@@ -112,7 +111,9 @@ export default function Post({ post, navigatePosts }: PostProps) {
             {navigatePosts.previousPost.slug && (
               <>
                 <h1>{navigatePosts.previousPost.title}</h1>
-                <a href={navigatePosts.previousPost.slug}>Post anterios</a>
+                <Link href={navigatePosts.previousPost.slug}>
+                  <a>Post anterios</a>
+                </Link>
               </>
             )}
           </div>
@@ -120,7 +121,9 @@ export default function Post({ post, navigatePosts }: PostProps) {
             {navigatePosts.nextPost.slug && (
               <>
                 <h1>{navigatePosts.nextPost.title}</h1>
-                <a href={navigatePosts.nextPost.slug}>Próximo post</a>
+                <Link href={navigatePosts.nextPost.slug}>
+                  <a>Próximo post</a>
+                </Link>
               </>
             )}
           </div>
