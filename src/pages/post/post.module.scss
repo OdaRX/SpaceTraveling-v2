@@ -81,7 +81,7 @@
 .nav {
   display: flex;
   justify-content: space-between;
-  margin: 3rem 0 30px 0;
+  margin: 3rem 0 5rem 0;
 
   div {
     max-width: 300px;
@@ -117,4 +117,8 @@
       color: var(--title);
     }
   }
+}
+
+.comments {
+  margin-bottom: 2rem;
 }

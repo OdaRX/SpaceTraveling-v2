@@ -9,6 +9,7 @@ import { ptBR } from 'date-fns/locale';
 import Prismic from '@prismicio/client';
 import Link from 'next/link';
 import Head from 'next/head';
+import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
@@ -136,6 +137,9 @@ export default function Post({ post, navigatePosts }: PostProps) {
               </>
             )}
           </div>
+        </div>
+        <div className={styles.comments}>
+          <Comments />
         </div>
       </div>
     </>
