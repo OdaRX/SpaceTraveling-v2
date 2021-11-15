@@ -11,6 +11,7 @@ import { ptBR } from 'date-fns/locale';
 
 interface Post {
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -66,6 +67,16 @@ export default function Post({ post }: PostProps) {
               <FiClock /> {time} min
             </span>
           </div>
+          <strong>
+            * editado em{' '}
+            {format(new Date(post.last_publication_date), 'dd MMM yyyy', {
+              locale: ptBR,
+            })}{' '}
+            às{' '}
+            {format(new Date(post.last_publication_date), 'HH:mm', {
+              locale: ptBR,
+            })}
+          </strong>
         </div>
 
         <div className={styles.content}>
@@ -109,6 +120,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = {
     slug,
     first_publication_date: response.first_publication_date,
+    last_publication_date: response.last_publication_date,
     data: {
       title: response.data.title,
       banner: {

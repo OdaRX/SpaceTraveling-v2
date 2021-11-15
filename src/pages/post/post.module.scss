@@ -16,12 +16,21 @@
     margin-bottom: 1.5rem;
   }
 
+  strong {
+    color: var(--info);
+    font-weight: normal;
+    font-size: 0.875rem;
+    font-style: italic;
+    display: block;
+    margin-top: 1rem;
+  }
+
   div {
     display: flex;
 
     span {
       color: var(--info);
-      font-weight: regular;
+      font-weight: normal;
       font-size: 0.875rem;
       display: flex;
       justify-content: center;
