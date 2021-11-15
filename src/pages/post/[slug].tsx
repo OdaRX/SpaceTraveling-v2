@@ -8,6 +8,7 @@ import { FiUser, FiCalendar, FiClock } from 'react-icons/fi';
 import { RichText } from 'prismic-dom';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import Prismic from '@prismicio/client';
 
 interface Post {
   first_publication_date: string | null;
@@ -27,11 +28,23 @@ interface Post {
   };
 }
 
-interface PostProps {
-  post: Post;
+interface NavigatePostsProps {
+  previousPost: {
+    slug: string | null;
+    title: string | null;
+  };
+  nextPost: {
+    slug: string | null;
+    title: string | null;
+  };
 }
 
-export default function Post({ post }: PostProps) {
+interface PostProps {
+  post: Post;
+  navigatePosts: NavigatePostsProps;
+}
+
+export default function Post({ post, navigatePosts }: PostProps) {
   const words = post.data.content.reduce((accumulator, contentItem) => {
     const text = contentItem.body.map(item => item.text.split(' ').length);
     text.map(word => {
@@ -42,7 +55,7 @@ export default function Post({ post }: PostProps) {
   }, 0);
 
   const time = Math.ceil(words / 200);
-
+  // console.log(navigatePosts);
   return (
     <>
       <div className={styles.banner}>
@@ -80,18 +93,37 @@ export default function Post({ post }: PostProps) {
         </div>
 
         <div className={styles.content}>
-          {post.data.content.map(content => {
+          {post.data.content.map((content, index) => {
             return (
-              <>
+              <div key={index}>
                 <h1>{content.heading}</h1>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: RichText.asHtml(content.body),
                   }}
                 />
-              </>
+              </div>
             );
           })}
+        </div>
+
+        <div className={styles.nav}>
+          <div>
+            {navigatePosts.previousPost.slug && (
+              <>
+                <h1>{navigatePosts.previousPost.title}</h1>
+                <a href={navigatePosts.previousPost.slug}>Post anterios</a>
+              </>
+            )}
+          </div>
+          <div>
+            {navigatePosts.nextPost.slug && (
+              <>
+                <h1>{navigatePosts.nextPost.title}</h1>
+                <a href={navigatePosts.nextPost.slug}>Próximo post</a>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
@@ -116,9 +148,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       body: [...content.body],
     };
   });
-
+  // console.log(response);
   const post = {
-    slug,
+    uid: response.uid,
     first_publication_date: response.first_publication_date,
     last_publication_date: response.last_publication_date,
     data: {
@@ -131,7 +163,36 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   };
 
+  const { id } = response;
+
+  const previousPost = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'posts'), {
+      pageSize: 1,
+      after: `${id}`,
+      orderings: '[document.last_publication_date desc]',
+    })
+  ).results[0];
+
+  const nextPost = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'posts'), {
+      pageSize: 1,
+      after: `${id}`,
+      orderings: '[document.last_publication_date]',
+    })
+  ).results[0];
+
+  const navigatePosts = {
+    previousPost: {
+      slug: previousPost?.uid ?? null,
+      title: previousPost?.data.title ?? null,
+    },
+    nextPost: {
+      slug: nextPost?.uid ?? null,
+      title: nextPost?.data.title ?? null,
+    },
+  };
+
   return {
-    props: { post },
+    props: { post, navigatePosts },
   };
 };
