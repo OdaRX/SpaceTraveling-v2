@@ -118,6 +118,7 @@ export const getStaticProps: GetStaticProps = async () => {
     [Prismic.predicates.at('document.type', 'posts')],
     {
       pageSize: 3,
+      orderings: '[document.first_publication_date desc]',
     }
   );
 
