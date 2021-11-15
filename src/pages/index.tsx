@@ -20,9 +20,6 @@ interface Post {
     author: string;
   };
 }
-interface PostsProps {
-  posts: Post[];
-}
 interface PostPagination {
   next_page: string;
   results: Post[];
