@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Prismic from '@prismicio/client';
 import Link from 'next/link';
+import Head from 'next/head';
 
 interface Post {
   first_publication_date: string | null;
@@ -57,6 +58,10 @@ export default function Post({ post, navigatePosts }: PostProps) {
   // console.log(navigatePosts);
   return (
     <>
+      <Head>
+        <title>{post.data.title} | spacetraveling</title>
+      </Head>
+
       <div className={styles.banner}>
         <img src={post.data.banner.url} alt={post.data.title} />
       </div>
