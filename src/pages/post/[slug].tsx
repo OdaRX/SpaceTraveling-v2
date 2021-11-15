@@ -53,13 +53,14 @@ export default function Post({ post }: PostProps) {
           <h1>{post.data.title}</h1>
           <div>
             <span>
-              <FiUser />{' '}
+              <FiCalendar />{' '}
               {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
                 locale: ptBR,
               })}
             </span>
             <span>
-              <FiCalendar /> {post.data.author}
+              <FiUser />
+              {post.data.author}
             </span>
             <span>
               <FiClock /> {time} min

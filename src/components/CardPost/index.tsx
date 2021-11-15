@@ -25,11 +25,11 @@ export default function CardPost({
           <p>{subTitle}</p>
           <div>
             <span>
-              <FiUser />
+              <FiCalendar />
               {createdAt}
             </span>
             <span>
-              <FiCalendar />
+              <FiUser />
               {author}
             </span>
           </div>
