@@ -80,14 +80,18 @@ export default function Post({ post, navigatePosts }: PostProps) {
             </span>
           </div>
           <strong>
-            * editado em{' '}
-            {format(new Date(post.last_publication_date), 'dd MMM yyyy', {
-              locale: ptBR,
-            })}{' '}
-            às{' '}
-            {format(new Date(post.last_publication_date), 'HH:mm', {
-              locale: ptBR,
-            })}
+            {post.last_publication_date !== post.first_publication_date && (
+              <>
+                * editado em{' '}
+                {format(new Date(post.last_publication_date), 'dd MMM yyyy', {
+                  locale: ptBR,
+                })}{' '}
+                às{' '}
+                {format(new Date(post.last_publication_date), 'HH:mm', {
+                  locale: ptBR,
+                })}
+              </>
+            )}
           </strong>
         </div>
 
