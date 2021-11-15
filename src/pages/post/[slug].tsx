@@ -5,7 +5,9 @@ import { getPrismicClient } from '../../services/prismic';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { FiUser, FiCalendar, FiClock } from 'react-icons/fi';
-import { RichText } from 'prismic-reactjs';
+import { RichText } from 'prismic-dom';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface Post {
   first_publication_date: string | null;
@@ -29,11 +31,21 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
-  console.log(post);
+  const words = post.data.content.reduce((accumulator, contentItem) => {
+    const text = contentItem.body.map(item => item.text.split(' ').length);
+    text.map(word => {
+      accumulator += word;
+    });
+
+    return accumulator;
+  }, 0);
+
+  const time = Math.ceil(words / 200);
+
   return (
     <>
       <div className={styles.banner}>
-        <img src={post.data.banner.url} alt="ColocarNomeDoPost" />
+        <img src={post.data.banner.url} alt={post.data.title} />
       </div>
 
       <div className={commonStyles.container}>
@@ -42,25 +54,33 @@ export default function Post({ post }: PostProps) {
           <div>
             <span>
               <FiUser />{' '}
-              {new Date(post.first_publication_date).toLocaleDateString(
-                'pt-BR',
-                {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                }
-              )}
+              {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
+                locale: ptBR,
+              })}
             </span>
             <span>
               <FiCalendar /> {post.data.author}
             </span>
             <span>
-              <FiClock /> 4 min
+              <FiClock /> {time} min
             </span>
           </div>
         </div>
 
-        <div className={styles.content}>{post.data.content.heading}</div>
+        <div className={styles.content}>
+          {post.data.content.map(content => {
+            return (
+              <>
+                <h1>{content.heading}</h1>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: RichText.asHtml(content.body),
+                  }}
+                />
+              </>
+            );
+          })}
+        </div>
       </div>
     </>
   );
@@ -78,6 +98,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
+  const content = response.data.content.map(content => {
+    return {
+      heading: content.heading,
+      body: [...content.body],
+    };
+  });
+
   const post = {
     slug,
     first_publication_date: response.first_publication_date,
@@ -87,14 +114,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         url: response.data.banner.url,
       },
       author: response.data.author,
-      content: {
-        heading: '',
-        body: '',
-      },
+      content: content,
     },
   };
-
-  console.log('oi', post.data.content);
 
   return {
     props: { post },

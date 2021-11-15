@@ -40,4 +40,29 @@
 .content {
   color: var(--text);
   margin-bottom: 5rem;
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--title);
+    margin-bottom: 2.25rem;
+  }
+
+  div {
+    line-height: 1.5rem;
+    font-size: 1.125;
+    font-weight: regular;
+    color: var(--text);
+    margin-bottom: 2.25rem;
+
+    a {
+      color: var(--pink);
+      font-weight: normal;
+      transition: filter 0.2s;
+
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+  }
 }
