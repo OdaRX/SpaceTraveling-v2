@@ -7,6 +7,8 @@ import Prismic from '@prismicio/client';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface Post {
   uid?: string;
@@ -43,13 +45,13 @@ export default function Home({ posts }: PostsProps) {
               key={post.uid}
               title={post.data.title}
               subTitle={post.data.subtitle}
-              createdAt={new Date(
-                post.first_publication_date
-              ).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              })}
+              createdAt={format(
+                new Date(post.first_publication_date),
+                'dd MMM yyyy',
+                {
+                  locale: ptBR,
+                }
+              )}
               author={post.data.author}
               url={post.uid}
             />
